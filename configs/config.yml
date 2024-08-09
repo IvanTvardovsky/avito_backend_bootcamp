@@ -1,0 +1,13 @@
+app:
+  name: 'avito-backend-bootcamp'
+  version: '1.0.0'
+
+http:
+  port: '8080'
+
+logger:
+  log_level: 'debug'
+  rollbar_env: 'avito-backend-bootcamp'
+
+postgres:
+  pool_max: 2

@@ -1,0 +1,38 @@
+version: '3.5'
+
+services:
+  go_app:
+    restart: always
+    depends_on:
+      - my_db
+    build:
+      context: ./../..
+      dockerfile: test/integration/Dockerfile
+    container_name: test-rest-server
+    hostname: test-rest-server
+    ports:
+      - 8080:8080
+    environment:
+      - PG_URL=postgres://postgres:admin@my_db:5432/avito_bootcamp
+    networks:
+      - test-mynet
+  my_db:
+    image: postgres:alpine3.19
+    container_name: test-db
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_DB=avito_bootcamp
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+    volumes:
+      #- pgdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - test-mynet
+
+volumes:
+  pgdata:
+networks:
+  test-mynet:
+    driver: bridge
